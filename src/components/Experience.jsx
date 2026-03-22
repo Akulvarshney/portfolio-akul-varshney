@@ -15,7 +15,7 @@ export default function Experience() {
             <div className="exp-grid reveal">
                 <div className="exp-tabs">
                     <div className={`exp-tab ${activeTab === 0 ? 'active' : ''}`} onClick={() => setActiveTab(0)}>
-                        <div className="exp-tab-title">IRCTC Food Supply Chain</div>
+                        <div className="exp-tab-title">RK Group (IRCTC Vendor) Food Supply Chain</div>
                         <div className="exp-tab-sub">Orane Consulting · RKG Group</div>
                         <span className="exp-badge-sm b-live">● Live at scale</span>
                     </div>
@@ -37,7 +37,7 @@ export default function Experience() {
                 </div>
                 <div id="exp-panels">
                     <div className={`exp-panel ${activeTab === 0 ? 'active' : ''}`}>
-                        <div className="exp-panel-role">Lead Backend Engineer — IRCTC National Food Supply Chain</div>
+                        <div className="exp-panel-role">Lead Backend Engineer — RK Group (IRCTC Vendor) National Food Supply Chain</div>
                         <div className="exp-panel-co">Orane Consulting Pvt. Ltd. · RKG Group</div>
                         <div className="exp-panel-date">Mar 2023 – Present · Noida, India</div>
                         <ul className="exp-points">
@@ -56,17 +56,17 @@ export default function Experience() {
                         <div className="exp-img-strip">
                             <div className="exp-img-card">
                                 <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=400&q=70"
-                                    alt="Logistics" />
+                                    alt="Logistics" className="parallax-img" data-speed="0.12" />
                                 <div className="exp-img-card-label">Supply Chain</div>
                             </div>
                             <div className="exp-img-card">
                                 <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=400&q=70"
-                                    alt="Server" />
+                                    alt="Server" className="parallax-img" data-speed="0.12" />
                                 <div className="exp-img-card-label">Backend Infra</div>
                             </div>
                             <div className="exp-img-card">
                                 <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&q=70"
-                                    alt="Dashboard" />
+                                    alt="Dashboard" className="parallax-img" data-speed="0.12" />
                                 <div className="exp-img-card-label">Dashboard</div>
                             </div>
                         </div>
@@ -89,17 +89,17 @@ export default function Experience() {
                         <div className="exp-img-strip">
                             <div className="exp-img-card">
                                 <img src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400&q=70"
-                                    alt="Fleet" />
+                                    alt="Fleet" className="parallax-img" data-speed="0.12" />
                                 <div className="exp-img-card-label">Fleet Mgmt</div>
                             </div>
                             <div className="exp-img-card">
                                 <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=400&q=70"
-                                    alt="Maps" />
+                                    alt="Maps" className="parallax-img" data-speed="0.12" />
                                 <div className="exp-img-card-label">Live Tracking</div>
                             </div>
                             <div className="exp-img-card">
                                 <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&q=70"
-                                    alt="Mobile" />
+                                    alt="Mobile" className="parallax-img" data-speed="0.12" />
                                 <div className="exp-img-card-label">React Native</div>
                             </div>
                         </div>
@@ -120,12 +120,12 @@ export default function Experience() {
                         <div className="exp-img-strip">
                             <div className="exp-img-card">
                                 <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&q=70"
-                                    alt="Auction" />
+                                    alt="Auction" className="parallax-img" data-speed="0.12" />
                                 <div className="exp-img-card-label">Auctions</div>
                             </div>
                             <div className="exp-img-card">
                                 <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=400&q=70"
-                                    alt="Real-time" />
+                                    alt="Real-time" className="parallax-img" data-speed="0.12" />
                                 <div className="exp-img-card-label">Real-time</div>
                             </div>
                         </div>
@@ -147,12 +147,12 @@ export default function Experience() {
                         <div className="exp-img-strip">
                             <div className="exp-img-card">
                                 <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=400&q=70"
-                                    alt="Enterprise" />
+                                    alt="Enterprise" className="parallax-img" data-speed="0.12" />
                                 <div className="exp-img-card-label">Enterprise</div>
                             </div>
                             <div className="exp-img-card">
                                 <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&q=70"
-                                    alt="Cloud" />
+                                    alt="Cloud" className="parallax-img" data-speed="0.12" />
                                 <div className="exp-img-card-label">AWS Cloud</div>
                             </div>
                         </div>

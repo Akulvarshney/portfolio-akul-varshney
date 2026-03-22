@@ -51,7 +51,7 @@ export default function HeroCanvas() {
         float d=length(gl_PointCoord-vec2(0.5));
         if(d>0.5)discard;
         float a=(1.0-d*2.0)*vAlpha;
-        gl_FragColor=vec4(0.0,0.9,0.46,a);
+        gl_FragColor=vec4(0.02,0.71,0.83,a);
       }
     `,
         transparent: true, depthWrite: false, blending: THREE.AdditiveBlending
@@ -75,7 +75,7 @@ export default function HeroCanvas() {
         }
     }
     lineGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(linePos), 3));
-    const lineMat = new THREE.LineBasicMaterial({ color: 0x00e676, transparent: true, opacity: 0.06 });
+    const lineMat = new THREE.LineBasicMaterial({ color: 0x06b6d4, transparent: true, opacity: 0.06 });
     scene.add(new THREE.LineSegments(lineGeo, lineMat));
 
     let mox = 0, moy = 0;
