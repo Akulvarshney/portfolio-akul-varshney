@@ -26,10 +26,18 @@ export default function Navbar() {
     }
   };
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <>
       <nav>
         <div className="nav-logo">akul<span>.</span>dev</div>
+        
+        {/* Desktop Links */}
         <ul className="nav-links">
           <li><a href="#about">About</a></li>
           <li><a href="#experience">Work</a></li>
@@ -37,32 +45,43 @@ export default function Navbar() {
           <li><a href="#skills">Stack</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
-        <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+
+        <div className="nav-actions">
           <button
             onClick={toggleTheme}
-            style={{
-              background: 'transparent',
-              border: '1px solid var(--line2)',
-              color: 'var(--c1)',
-              borderRadius: '50%',
-              width: '36px',
-              height: '36px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'none',
-              fontSize: '18px',
-              transition: 'all 0.2s ease',
-              outline: 'none'
-            }}
+            className="theme-toggle"
             title="Toggle Theme"
           >
             {isDark ? '☾' : '☀'}
           </button>
-          <a className="nav-hire" href={resume} download="Akul_Varshney_Resume.pdf" style={{ borderColor: 'var(--c2)', color: 'var(--c2)' }}>resume.pdf</a>
-          <a className="nav-hire" href="mailto:akulv.work@gmail.com">hire_me();</a>
+          <a className="nav-hire resume-btn" href={resume} download="Akul_Varshney_Resume.pdf">resume.pdf</a>
+          <a className="nav-hire hire-btn" href="mailto:akulv.work@gmail.com">contact</a>
+
+          {/* Hamburger Menu Icon */}
+          <button className={`hamburger ${isMenuOpen ? 'active' : ''}`} onClick={toggleMenu} aria-label="Menu">
+            <span className="bar"></span>
+            <span className="bar"></span>
+            <span className="bar"></span>
+          </button>
         </div>
       </nav>
+
+      {/* Mobile Menu Overlay */}
+      <div className={`mobile-menu ${isMenuOpen ? 'active' : ''}`}>
+        <ul className="mobile-links">
+          <li><a href="#about" onClick={toggleMenu}>About</a></li>
+          <li><a href="#experience" onClick={toggleMenu}>Work</a></li>
+          <li><a href="#projects" onClick={toggleMenu}>Projects</a></li>
+          <li><a href="#skills" onClick={toggleMenu}>Stack</a></li>
+          <li><a href="#contact" onClick={toggleMenu}>Contact</a></li>
+          <li className="mobile-cta">
+            <a className="nav-hire" href={resume} download="Akul_Varshney_Resume.pdf">resume.pdf</a>
+          </li>
+          <li className="mobile-cta">
+            <a className="nav-hire" href="mailto:akulv.work@gmail.com">contact</a>
+          </li>
+        </ul>
+      </div>
     </>
   );
 }
