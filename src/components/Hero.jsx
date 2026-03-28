@@ -1,70 +1,121 @@
 import React from 'react';
+import { motion, useScroll, useTransform, useSpring, useReducedMotion } from 'framer-motion';
+import { Button, Space } from 'antd';
+import { DownloadOutlined, MailOutlined } from '@ant-design/icons';
 import resume from '../assets/resume.pdf';
 import me from '../assets/me.PNG';
 
+const MARQUEE_ITEMS = [
+  'BACKEND',
+  'NODE.JS',
+  'GEN AI',
+  'ANTHROPIC',
+  'DISTRIBUTED SYSTEMS',
+  'AWS',
+  'API DESIGN',
+  'SUPPLY CHAIN',
+  'PROCUREMENT',
+  'FULL-STACK',
+];
+
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.15 },
+  },
+};
+
+const item = {
+  hidden: { opacity: 0, y: 24 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
 export default function Hero() {
-    return (
-        <section id="hero">
-            <div className="hero-content">
-                <div className="hero-eyebrow">
-                    <div className="hero-dot"></div>
-                    <span className="hero-status">OPEN TO SDE-2 / BACKEND / FULL-STACK ROLES</span>
-                </div>
-                
-                <h1 className="hero-name">
-                    AKUL <br />
-                    <span className="line2">VARSHNEY</span>
-                </h1>
-                
-                <p className="hero-title">
-                    Backend Engineer / <span>Node.js</span> / Distributed Systems
-                </p>
-                
-                <p className="hero-desc">
-                    I build reliable backend systems used in production. 
-                    Most recent work includes national-scale supply chain workflows handling <strong>100K+ daily transactions</strong>.
-                </p>
+  const reduceMotion = useReducedMotion();
+  const { scrollY } = useScroll();
 
-                <div className="hero-stats">
-                    <div className="h-stat">
-                        <div className="h-stat-n">3<span className="u">+</span></div>
-                        <div className="h-stat-l">Years Prod</div>
-                    </div>
-                    <div className="h-stat">
-                        <div className="h-stat-n">100<span className="u">K</span></div>
-                        <div className="h-stat-l">Daily Txns</div>
-                    </div>
-                    <div className="h-stat">
-                        <div className="h-stat-n">300<span className="u">+</span></div>
-                        <div className="h-stat-l">Live Nodes</div>
-                    </div>
-                    <div className="h-stat">
-                        <div className="h-stat-n">40<span className="u">%</span></div>
-                        <div className="h-stat-l">Latency Cut</div>
-                    </div>
-                </div>
+  const yCopy = useTransform(scrollY, [0, 420], [0, reduceMotion ? 0 : 85]);
+  const yPhoto = useTransform(scrollY, [0, 420], [0, reduceMotion ? 0 : -55]);
+  const yMarquee = useTransform(scrollY, [0, 500], [0, reduceMotion ? 0 : -100]);
+  const opCopy = useTransform(scrollY, [0, 320], [1, reduceMotion ? 1 : 0.82]);
+  const scalePhoto = useTransform(scrollY, [0, 450], [1, reduceMotion ? 1 : 0.94]);
+  const rotatePhoto = useTransform(scrollY, [0, 500], [0, reduceMotion ? 0 : -2.5]);
 
-                <div className="hero-btns">
-                    <a className="btn-primary" href="mailto:akulv.work@gmail.com">Contact Me →</a>
-                    <a className="btn-ghost" href={resume} download="Akul_Varshney_Resume.pdf">Resume ↓</a>
-                    <a className="btn-ghost" href="https://github.com/akulvarshney" target="_blank" rel="noopener noreferrer">GitHub</a>
-                </div>
-            </div>
+  const scalePhotoSpring = useSpring(scalePhoto, { stiffness: 120, damping: 28 });
+  const rotatePhotoSpring = useSpring(rotatePhoto, { stiffness: 100, damping: 30 });
 
-            <div className="hero-img-wrap">
-                <div className="hero-img-frame">
-                    <img src={me} alt="Akul Varshney" />
-                    <div className="hero-img-overlay">
-                        <div className="hero-img-label">current focus</div>
-                        <div className="hero-img-val">Backend systems for supply chain and enterprise workflows</div>
-                    </div>
-                </div>
-            </div>
+  return (
+    <section id="hero" className="tp-hero">
+      <div className="tp-inner">
+        <div className="tp-hero__grid">
+          <motion.div style={{ y: yCopy, opacity: opCopy }}>
+            <motion.div
+              variants={container}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: false, amount: 0.25, margin: '0px 0px -20% 0px' }}
+            >
+              <motion.p className="tp-hero__kicker" variants={item}>
+                Open to SDE-2 · backend · full-stack · freelance
+              </motion.p>
+              <motion.h1 className="tp-hero__headline" variants={item}>
+                Hi, I&apos;m <span className="tp-hero__name">Akul</span>. A full-stack engineer building production
+                systems at scale.
+              </motion.h1>
+              <motion.p className="tp-hero__tags" variants={item}>
+                Node.js · APIs · AWS · Gen AI · React Native · React.js
+              </motion.p>
+              <motion.div variants={item}>
+                <Space size={14} wrap>
+                  <Button type="primary" size="large" icon={<DownloadOutlined />} href={resume} download="Akul_Varshney_Resume.pdf">
+                    View resume
+                  </Button>
+                  <Button size="large" icon={<MailOutlined />} href="mailto:akulv.work@gmail.com">
+                    Let&apos;s talk
+                  </Button>
+                </Space>
+              </motion.div>
+            </motion.div>
+          </motion.div>
 
-            <div className="scroll-ind">
-                <div className="scroll-txt">explore</div>
-                <div className="scroll-line"></div>
-            </div>
-        </section>
-    );
+          <motion.div
+            className="tp-hero__visual"
+            style={{ y: yPhoto }}
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: false, amount: 0.2 }}
+            transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+          >
+            <motion.div
+              style={{ scale: scalePhotoSpring, rotate: rotatePhotoSpring }}
+              className="tp-hero__photo-motion"
+            >
+              <div className="tp-hero__photo-wrap">
+                <img src={me} alt="Akul Varshney" width={560} height={700} />
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
+      </div>
+
+      <motion.div className="tp-hero__marquee" style={{ y: yMarquee }} aria-hidden="true">
+        <div className="tp-hero__marquee-track">
+          {[0, 1].map((copy) => (
+            <React.Fragment key={copy}>
+              {MARQUEE_ITEMS.map((label) => (
+                <span key={`${copy}-${label}`} className="tp-hero__marquee-item">
+                  <strong>{label}</strong>
+                </span>
+              ))}
+            </React.Fragment>
+          ))}
+        </div>
+      </motion.div>
+    </section>
+  );
 }
