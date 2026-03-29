@@ -432,7 +432,6 @@ body:has(button:hover) #cursor-ring {
   display: block;
   width: 100%;
   height: auto;
-  vertical-align: middle;
 }
 
 .tp-hero__marquee {
