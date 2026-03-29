@@ -459,19 +459,29 @@ body:has(button:hover) #cursor-ring {
 
 .tp-hero__marquee {
   margin-top: 48px;
+  overflow: hidden;
   border-top: 1px solid var(--tp-line);
   border-bottom: 1px solid var(--tp-line);
-  padding: 14px clamp(12px, 4vw, 24px);
+  padding: 14px 0;
   background: rgba(34, 211, 238, 0.04);
 }
 
-.tp-hero__marquee-track--static {
+.tp-hero__marquee-track {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px 4px;
-  width: 100%;
-  max-width: 100%;
+  width: max-content;
+  animation: tp-marquee 32s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tp-hero__marquee-track {
+    animation: none;
+  }
+}
+
+@keyframes tp-marquee {
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 .tp-hero__marquee-item {
@@ -481,7 +491,7 @@ body:has(button:hover) #cursor-ring {
   letter-spacing: 0.2em;
   color: var(--tp-muted);
   white-space: nowrap;
-  padding: 6px 14px;
+  padding: 0 20px;
 }
 
 .tp-hero__marquee-item strong {

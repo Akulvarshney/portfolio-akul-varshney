@@ -1,6 +1,5 @@
 import React from 'react';
 import { SectionShell } from './SectionShell';
-import { useInViewOnce } from '../hooks/useInViewOnce';
 
 const METRICS = [
   { key: 'lat', suffix: '%', target: 40, label: 'API latency reduced — profiled & shipped' },
@@ -27,21 +26,7 @@ const GALLERY = [
   },
 ];
 
-function MetricValue({ target, suffix, active, display }) {
-  if (display != null) {
-    return <div className="tp-impact__n">{display}</div>;
-  }
-  return (
-    <div className="tp-impact__n">
-      {active && target != null ? target : 0}
-      {suffix}
-    </div>
-  );
-}
-
 export default function Impact() {
-  const [gridRef, inView] = useInViewOnce({ threshold: 0.12 });
-
   return (
     <SectionShell id="impact">
       <p className="tp-kicker">
@@ -56,10 +41,17 @@ export default function Impact() {
         flows, and research — summarized for recruiters scanning fast.
       </p>
 
-      <div ref={gridRef} className="tp-impact__grid">
+      <div className="tp-impact__grid">
         {METRICS.map((m) => (
           <div key={m.key} className="tp-impact__cell">
-            <MetricValue target={m.target} suffix={m.suffix} active={inView} display={m.display} />
+            <div className="tp-impact__n">
+              {m.display != null ? m.display : (
+                <>
+                  {m.target}
+                  {m.suffix}
+                </>
+              )}
+            </div>
             <div className="tp-impact__l">{m.label}</div>
           </div>
         ))}

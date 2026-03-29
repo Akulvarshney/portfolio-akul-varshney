@@ -50,11 +50,15 @@ export default function Hero() {
       </div>
 
       <div className="tp-hero__marquee" aria-hidden="true">
-        <div className="tp-hero__marquee-track tp-hero__marquee-track--static">
-          {MARQUEE_ITEMS.map((label) => (
-            <span key={label} className="tp-hero__marquee-item">
-              <strong>{label}</strong>
-            </span>
+        <div className="tp-hero__marquee-track">
+          {[0, 1].map((copy) => (
+            <React.Fragment key={copy}>
+              {MARQUEE_ITEMS.map((label) => (
+                <span key={`${copy}-${label}`} className="tp-hero__marquee-item">
+                  <strong>{label}</strong>
+                </span>
+              ))}
+            </React.Fragment>
           ))}
         </div>
       </div>
