@@ -38,6 +38,13 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Native momentum scroll on touch; CSS smooth-scroll fights it and feels janky. */
+@media (max-width: 900px), (pointer: coarse) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 body {
   font-family: var(--sans);
   background: var(--tp-bg);
@@ -95,7 +102,6 @@ body.dark::before {
   z-index: 10001;
   transform: translate(-50%, -50%);
   box-shadow: 0 0 12px var(--tp-cyan);
-  transition: transform 0.12s, width 0.2s, height 0.2s, background 0.2s;
 }
 
 #cursor-ring {
@@ -107,7 +113,6 @@ body.dark::before {
   pointer-events: none;
   z-index: 10000;
   transform: translate(-50%, -50%);
-  transition: width 0.15s, height 0.15s, border-color 0.2s;
 }
 
 #cursor.hovering,
@@ -156,6 +161,13 @@ body:has(button:hover) #cursor-ring {
   backdrop-filter: blur(20px) saturate(1.2);
   border-bottom: 1px solid var(--tp-line);
   transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+@media (max-width: 900px) {
+  .tp-nav {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
 }
 
 .tp-nav__logo {
@@ -292,6 +304,17 @@ body:has(button:hover) #cursor-ring {
   .scroll-section__glow,
   .scroll-section__parallax-inner {
     will-change: auto;
+  }
+}
+
+@media (max-width: 900px) {
+  .scroll-section__glow,
+  .scroll-section__parallax-inner {
+    will-change: auto;
+  }
+
+  .scroll-section {
+    overflow: visible;
   }
 }
 
@@ -436,23 +459,19 @@ body:has(button:hover) #cursor-ring {
 
 .tp-hero__marquee {
   margin-top: 48px;
-  overflow: hidden;
   border-top: 1px solid var(--tp-line);
   border-bottom: 1px solid var(--tp-line);
-  padding: 14px 0;
+  padding: 14px clamp(12px, 4vw, 24px);
   background: rgba(34, 211, 238, 0.04);
 }
 
-.tp-hero__marquee-track {
+.tp-hero__marquee-track--static {
   display: flex;
-  width: max-content;
-  animation: tp-marquee 32s linear infinite;
-}
-
-@keyframes tp-marquee {
-  to {
-    transform: translateX(-50%);
-  }
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 4px;
+  width: 100%;
+  max-width: 100%;
 }
 
 .tp-hero__marquee-item {
@@ -462,7 +481,7 @@ body:has(button:hover) #cursor-ring {
   letter-spacing: 0.2em;
   color: var(--tp-muted);
   white-space: nowrap;
-  padding: 0 20px;
+  padding: 6px 14px;
 }
 
 .tp-hero__marquee-item strong {
@@ -692,6 +711,24 @@ body:has(button:hover) #cursor-ring {
 .tp-exp__points strong {
   color: var(--tp-ink);
   font-weight: 600;
+}
+
+.tp-exp-images-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--tp-line);
+  overflow: hidden;
+  background: var(--tp-bg-2);
+}
+
+.tp-exp-images-stack .tp-exp-slide {
+  border-radius: 0;
+}
+
+.tp-exp-images-stack .tp-exp-slide + .tp-exp-slide {
+  border-top: 1px solid var(--tp-line);
 }
 
 .tp-exp-carousel {
@@ -1016,8 +1053,3 @@ body:has(button:hover) #cursor-ring {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .tp-hero__marquee-track {
-    animation: none;
-  }
-}

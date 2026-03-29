@@ -1,46 +1,39 @@
 import React, { useEffect, useRef } from 'react';
+import { useTheme } from '../hooks/useTheme';
 
 export default function Cursor() {
   const cursorRef = useRef(null);
   const ringRef = useRef(null);
+  const { mobileLite } = useTheme();
 
   useEffect(() => {
-    let mx = 0, my = 0, rx = 0, ry = 0;
-    
-    const onMouseMove = e => {
-      mx = e.clientX; 
-      my = e.clientY; 
+    if (mobileLite) return undefined;
+
+    const onMouseMove = (e) => {
+      const x = e.clientX;
+      const y = e.clientY;
       if (cursorRef.current) {
-        cursorRef.current.style.left = mx + 'px'; 
-        cursorRef.current.style.top = my + 'px';
+        cursorRef.current.style.left = `${x}px`;
+        cursorRef.current.style.top = `${y}px`;
+      }
+      if (ringRef.current) {
+        ringRef.current.style.left = `${x}px`;
+        ringRef.current.style.top = `${y}px`;
       }
     };
     document.addEventListener('mousemove', onMouseMove);
-    
-    let reqId;
-    function animRing() { 
-      rx += (mx - rx) * 0.12; 
-      ry += (my - ry) * 0.12; 
-      if (ringRef.current) {
-        ringRef.current.style.left = rx + 'px'; 
-        ringRef.current.style.top = ry + 'px'; 
-      }
-      reqId = requestAnimationFrame(animRing); 
-    }
-    animRing();
 
-    // Fallback for Safari without :has() support or bugs
     const handleMouseOver = (e) => {
-        if (e.target.closest('a') || e.target.closest('button')) {
-            if (cursorRef.current) cursorRef.current.classList.add('hovering');
-            if (ringRef.current) ringRef.current.classList.add('hovering');
-        }
+      if (e.target.closest('a') || e.target.closest('button')) {
+        if (cursorRef.current) cursorRef.current.classList.add('hovering');
+        if (ringRef.current) ringRef.current.classList.add('hovering');
+      }
     };
     const handleMouseOut = (e) => {
-        if (e.target.closest('a') || e.target.closest('button')) {
-            if (cursorRef.current) cursorRef.current.classList.remove('hovering');
-            if (ringRef.current) ringRef.current.classList.remove('hovering');
-        }
+      if (e.target.closest('a') || e.target.closest('button')) {
+        if (cursorRef.current) cursorRef.current.classList.remove('hovering');
+        if (ringRef.current) ringRef.current.classList.remove('hovering');
+      }
     };
 
     document.addEventListener('mouseover', handleMouseOver);
@@ -50,14 +43,15 @@ export default function Cursor() {
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseover', handleMouseOver);
       document.removeEventListener('mouseout', handleMouseOut);
-      cancelAnimationFrame(reqId);
     };
-  }, []);
+  }, [mobileLite]);
+
+  if (mobileLite) return null;
 
   return (
     <>
-      <div id="cursor" ref={cursorRef}></div>
-      <div id="cursor-ring" ref={ringRef}></div>
+      <div id="cursor" ref={cursorRef} />
+      <div id="cursor-ring" ref={ringRef} />
     </>
   );
 }

@@ -1,8 +1,7 @@
 import React from 'react';
 import { Carousel } from 'antd';
-import { motion } from 'framer-motion';
-import { Reveal } from './Reveal';
-import { useSectionParallax } from '../hooks/useSectionParallax';
+import { SectionShell } from './SectionShell';
+import { useTheme } from '../hooks/useTheme';
 
 const EXPERIENCES = [
   {
@@ -68,98 +67,96 @@ const EXPERIENCES = [
   },
 ];
 
+function ExpSlide({ img }) {
+  return (
+    <div className="tp-exp-slide">
+      <img src={img.url} alt="" loading="lazy" width={400} height={300} />
+      <div className="tp-exp-slide-cap">{img.label}</div>
+    </div>
+  );
+}
+
+/** Stacked images — no carousel on small screens / touch. */
+function ExpImagesStack({ images, label }) {
+  if (!images?.length) return null;
+  return (
+    <div
+      className="tp-exp-images-stack"
+      aria-label={label ? `Images: ${label}` : 'Role images'}
+    >
+      {images.map((img) => (
+        <ExpSlide key={img.url} img={img} />
+      ))}
+    </div>
+  );
+}
+
 function ExpCarousel({ images, label }) {
   if (!images?.length) return null;
   return (
     <Carousel
       className="tp-exp-carousel"
-      autoplay={images.length > 1}
-      autoplaySpeed={5200}
-      effect="fade"
+      autoplay={false}
       dots={images.length > 1}
       arrows={images.length > 1}
       aria-label={label ? `Images: ${label}` : 'Role images'}
     >
       {images.map((img) => (
         <div key={img.url}>
-          <div className="tp-exp-slide">
-            <img src={img.url} alt="" loading="lazy" width={400} height={300} />
-            <div className="tp-exp-slide-cap">{img.label}</div>
-          </div>
+          <ExpSlide img={img} />
         </div>
       ))}
     </Carousel>
   );
 }
 
+function ExpRoleImages({ images, label }) {
+  const { mobileLite } = useTheme();
+  if (mobileLite) {
+    return <ExpImagesStack images={images} label={label} />;
+  }
+  return <ExpCarousel images={images} label={label} />;
+}
+
 export default function Experience() {
-  const { ref, yInner, yFloat, opacityFloat } = useSectionParallax({ invert: false, parallax: 48 });
-
   return (
-    <section ref={ref} id="experience" className="tp-section scroll-section">
-      <motion.div className="scroll-section__glow" style={{ y: yFloat, opacity: opacityFloat }} aria-hidden />
-      <motion.div className="tp-inner scroll-section__parallax-inner" style={{ y: yInner }}>
-        <Reveal from="left" delay={0}>
-          <p className="tp-kicker">
-            <span className="tp-kicker__num">03</span>
-            Work
-          </p>
-        </Reveal>
-        <Reveal from="left" delay={0.08}>
-          <h2 className="tp-title">
-            Experience <span className="tp-title__glow">chronicle</span>
-          </h2>
-        </Reveal>
-        <Reveal from="left" delay={0.16}>
-          <p className="tp-intro">
-            Supply chain, fleet, procurement, enterprise vendor platforms, and Gen AI–assisted workflows — full bullets,
-            no accordions.
-          </p>
-        </Reveal>
+    <SectionShell id="experience">
+      <p className="tp-kicker">
+        <span className="tp-kicker__num">03</span>
+        Work
+      </p>
+      <h2 className="tp-title">
+        Experience <span className="tp-title__glow">chronicle</span>
+      </h2>
+      <p className="tp-intro">
+        Supply chain, fleet, procurement, enterprise vendor platforms, and Gen AI–assisted workflows — full bullets, no
+        accordions.
+      </p>
 
-        <div className="tp-exp__list">
-          {EXPERIENCES.map((exp, idx) => (
-            <motion.article
-              key={exp.role}
-              className="tp-exp__article"
-              initial={{
-                opacity: 0,
-                y: idx % 2 === 0 ? 64 : -64,
-                x: idx % 2 === 0 ? -20 : 20,
-              }}
-              whileInView={{ opacity: 1, y: 0, x: 0 }}
-              viewport={{ once: false, margin: '-60px', amount: 0.15 }}
-              transition={{ duration: 0.62, delay: Math.min(idx * 0.06, 0.18), ease: [0.22, 1, 0.36, 1] }}
-            >
-              <div>
-                <span className="tp-exp__idx" aria-hidden="true">
-                  {String(idx + 1).padStart(2, '0')}
-                </span>
-                <p className="tp-exp__date">{exp.date}</p>
-              </div>
+      <div className="tp-exp__list">
+        {EXPERIENCES.map((exp, idx) => (
+          <article key={exp.role} className="tp-exp__article">
+            <div>
+              <span className="tp-exp__idx" aria-hidden="true">
+                {String(idx + 1).padStart(2, '0')}
+              </span>
+              <p className="tp-exp__date">{exp.date}</p>
+            </div>
 
-              <div>
-                <h3 className="tp-exp__role">{exp.role}</h3>
-                <p className="tp-exp__company">{exp.company}</p>
-                <ul className="tp-exp__points">
-                  {exp.points.map((pt, pIdx) => (
-                    <li key={pIdx} dangerouslySetInnerHTML={{ __html: pt }} />
-                  ))}
-                </ul>
-              </div>
+            <div>
+              <h3 className="tp-exp__role">{exp.role}</h3>
+              <p className="tp-exp__company">{exp.company}</p>
+              <ul className="tp-exp__points">
+                {exp.points.map((pt, pIdx) => (
+                  <li key={pIdx} dangerouslySetInnerHTML={{ __html: pt }} />
+                ))}
+              </ul>
+            </div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 32 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false, amount: 0.25 }}
-                transition={{ duration: 0.52, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
-              >
-                <ExpCarousel images={exp.images} label={exp.role} />
-              </motion.div>
-            </motion.article>
-          ))}
-        </div>
-      </motion.div>
-    </section>
+            <ExpRoleImages images={exp.images} label={exp.role} />
+          </article>
+        ))}
+      </div>
+    </SectionShell>
   );
 }

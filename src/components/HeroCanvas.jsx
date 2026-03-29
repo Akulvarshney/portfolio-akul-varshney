@@ -1,8 +1,12 @@
 import React, { useEffect } from 'react';
 import * as THREE from 'three';
+import { useTheme } from '../hooks/useTheme';
 
 export default function HeroCanvas() {
+  const { mobileLite } = useTheme();
+
   useEffect(() => {
+    if (mobileLite) return undefined;
     const canvas = document.getElementById('heroCanvas');
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -117,7 +121,9 @@ export default function HeroCanvas() {
         lineGeo.dispose();
         lineMat.dispose();
     };
-  }, []);
+  }, [mobileLite]);
+
+  if (mobileLite) return null;
 
   return <canvas id="heroCanvas"></canvas>;
 }
