@@ -1,7 +1,11 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Carousel } from 'antd';
 import { SectionShell } from './SectionShell';
+import { Reveal } from './Reveal';
 import { useTheme } from '../hooks/useTheme';
+
+const ease = [0.22, 1, 0.36, 1];
 
 const EXPERIENCES = [
   {
@@ -76,14 +80,10 @@ function ExpSlide({ img }) {
   );
 }
 
-/** Stacked images — no carousel on small screens / touch. */
 function ExpImagesStack({ images, label }) {
   if (!images?.length) return null;
   return (
-    <div
-      className="tp-exp-images-stack"
-      aria-label={label ? `Images: ${label}` : 'Role images'}
-    >
+    <div className="tp-exp-images-stack" aria-label={label ? `Images: ${label}` : 'Role images'}>
       {images.map((img) => (
         <ExpSlide key={img.url} img={img} />
       ))}
@@ -120,22 +120,35 @@ function ExpRoleImages({ images, label }) {
 
 export default function Experience() {
   return (
-    <SectionShell id="experience">
-      <p className="tp-kicker">
-        <span className="tp-kicker__num">03</span>
-        Work
-      </p>
-      <h2 className="tp-title">
-        Experience <span className="tp-title__glow">chronicle</span>
-      </h2>
-      <p className="tp-intro">
-        Supply chain, fleet, procurement, enterprise vendor platforms, and Gen AI–assisted workflows — full bullets, no
-        accordions.
-      </p>
+    <SectionShell id="experience" invert={false} parallax={48}>
+      <Reveal from="left" delay={0}>
+        <p className="tp-kicker">
+          <span className="tp-kicker__num">03</span>
+          Work
+        </p>
+      </Reveal>
+      <Reveal from="left" delay={0.08}>
+        <h2 className="tp-title">
+          Experience <span className="tp-title__glow">chronicle</span>
+        </h2>
+      </Reveal>
+      <Reveal from="left" delay={0.16}>
+        <p className="tp-intro">
+          Supply chain, fleet, procurement, enterprise vendor platforms, and Gen AI–assisted workflows — full bullets, no
+          accordions.
+        </p>
+      </Reveal>
 
       <div className="tp-exp__list">
         {EXPERIENCES.map((exp, idx) => (
-          <article key={exp.role} className="tp-exp__article">
+          <motion.article
+            key={exp.role}
+            className="tp-exp__article"
+            initial={{ opacity: 0, y: idx % 2 === 0 ? 48 : -48, x: idx % 2 === 0 ? -16 : 16 }}
+            whileInView={{ opacity: 1, y: 0, x: 0 }}
+            viewport={{ once: true, amount: 'some', margin: '0px 0px -10% 0px' }}
+            transition={{ duration: 0.58, delay: Math.min(idx * 0.05, 0.15), ease }}
+          >
             <div>
               <span className="tp-exp__idx" aria-hidden="true">
                 {String(idx + 1).padStart(2, '0')}
@@ -153,8 +166,15 @@ export default function Experience() {
               </ul>
             </div>
 
-            <ExpRoleImages images={exp.images} label={exp.role} />
-          </article>
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 'some', margin: '0px' }}
+              transition={{ duration: 0.48, ease, delay: 0.04 }}
+            >
+              <ExpRoleImages images={exp.images} label={exp.role} />
+            </motion.div>
+          </motion.article>
         ))}
       </div>
     </SectionShell>

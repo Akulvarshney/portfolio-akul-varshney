@@ -1,7 +1,11 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Card, Tag, Space } from 'antd';
 import { LinkOutlined } from '@ant-design/icons';
 import { SectionShell } from './SectionShell';
+import { Reveal } from './Reveal';
+
+const ease = [0.22, 1, 0.36, 1];
 
 const PROJECTS = [
   {
@@ -55,23 +59,36 @@ const PROJECTS = [
 
 export default function Projects() {
   return (
-    <SectionShell id="projects">
-      <p className="tp-kicker">
-        <span className="tp-kicker__num">04</span>
-        Projects
-      </p>
-      <h2 className="tp-title">
-        Selected builds <span className="tp-title__glow">that shipped</span>
-      </h2>
-      <p className="tp-intro">
-        Multi-tenant SaaS, production freelance landing pages, real-time interview tooling, and enterprise vendor intelligence
-        (invoice → PO, RFQ copilot)—backend, integrations, and Gen AI owned end to end.
-      </p>
+    <SectionShell id="projects" invert parallax={54}>
+      <Reveal from="down" delay={0}>
+        <p className="tp-kicker">
+          <span className="tp-kicker__num">04</span>
+          Projects
+        </p>
+      </Reveal>
+      <Reveal from="down" delay={0.08}>
+        <h2 className="tp-title">
+          Selected builds <span className="tp-title__glow">that shipped</span>
+        </h2>
+      </Reveal>
+      <Reveal from="down" delay={0.16}>
+        <p className="tp-intro">
+          Multi-tenant SaaS, production freelance landing pages, real-time interview tooling, and enterprise vendor intelligence
+          (invoice → PO, RFQ copilot)—backend, integrations, and Gen AI owned end to end.
+        </p>
+      </Reveal>
 
       <div className="tp-proj__grid">
-        {PROJECTS.map((p) => (
-          <div key={p.id}>
-            <Card className="tp-proj-card" cover={<img alt={p.alt} src={p.img} />}>
+        {PROJECTS.map((p, i) => (
+          <motion.div
+            key={p.id}
+            initial={{ opacity: 0, y: 32, x: i % 2 === 0 ? -40 : 40 }}
+            whileInView={{ opacity: 1, y: 0, x: 0 }}
+            viewport={{ once: true, amount: 'some', margin: '0px' }}
+            transition={{ delay: i * 0.1, duration: 0.55, ease }}
+            whileHover={{ y: -6, transition: { duration: 0.25 } }}
+          >
+            <Card hoverable className="tp-proj-card" cover={<img alt={p.alt} src={p.img} />}>
               <div className="tp-proj-tag">{p.tag}</div>
               <div className="tp-proj-name">{p.name}</div>
               <p className="tp-proj-desc">{p.desc}</p>
@@ -89,7 +106,7 @@ export default function Projects() {
                 ))}
               </Space>
             </Card>
-          </div>
+          </motion.div>
         ))}
       </div>
     </SectionShell>

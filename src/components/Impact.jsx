@@ -1,5 +1,7 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { SectionShell } from './SectionShell';
+import { Reveal } from './Reveal';
 
 const METRICS = [
   { key: 'lat', suffix: '%', target: 40, label: 'API latency reduced — profiled & shipped' },
@@ -26,24 +28,40 @@ const GALLERY = [
   },
 ];
 
+const ease = [0.22, 1, 0.36, 1];
+
 export default function Impact() {
   return (
-    <SectionShell id="impact">
-      <p className="tp-kicker">
-        <span className="tp-kicker__num">02</span>
-        Impact
-      </p>
-      <h2 className="tp-title">
-        Measurable outcomes <span className="tp-title__glow">from real systems.</span>
-      </h2>
-      <p className="tp-intro">
-        Production reliability, latency wins, national food supply on trains and fleet scale, Gen AI on vendor and procurement
-        flows, and research — summarized for recruiters scanning fast.
-      </p>
+    <SectionShell id="impact" invert parallax={60}>
+      <Reveal from="down" delay={0}>
+        <p className="tp-kicker">
+          <span className="tp-kicker__num">02</span>
+          Impact
+        </p>
+      </Reveal>
+      <Reveal from="down" delay={0.08}>
+        <h2 className="tp-title">
+          Measurable outcomes <span className="tp-title__glow">from real systems.</span>
+        </h2>
+      </Reveal>
+      <Reveal from="down" delay={0.16}>
+        <p className="tp-intro">
+          Production reliability, latency wins, national food supply on trains and fleet scale, Gen AI on vendor and procurement
+          flows, and research — summarized for recruiters scanning fast.
+        </p>
+      </Reveal>
 
       <div className="tp-impact__grid">
-        {METRICS.map((m) => (
-          <div key={m.key} className="tp-impact__cell">
+        {METRICS.map((m, i) => (
+          <motion.div
+            key={m.key}
+            className="tp-impact__cell"
+            initial={{ opacity: 0, y: i % 2 === 0 ? 40 : -40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 'some', margin: '0px 0px -8% 0px' }}
+            transition={{ delay: i * 0.08, duration: 0.55, ease }}
+            whileHover={{ y: -4, transition: { duration: 0.2 } }}
+          >
             <div className="tp-impact__n">
               {m.display != null ? m.display : (
                 <>
@@ -53,16 +71,24 @@ export default function Impact() {
               )}
             </div>
             <div className="tp-impact__l">{m.label}</div>
-          </div>
+          </motion.div>
         ))}
       </div>
 
       <div className="tp-impact__gallery">
-        {GALLERY.map((item) => (
-          <div key={item.src} className="tp-impact__shot">
+        {GALLERY.map((item, i) => (
+          <motion.div
+            key={item.src}
+            className="tp-impact__shot"
+            initial={{ opacity: 0, y: i % 2 === 0 ? -28 : 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 'some', margin: '0px' }}
+            transition={{ delay: i * 0.12, duration: 0.52, ease }}
+            whileHover={{ y: -6, transition: { duration: 0.22 } }}
+          >
             <img src={item.src} alt={item.alt} loading="lazy" width={600} height={200} />
             <span>{item.label}</span>
-          </div>
+          </motion.div>
         ))}
       </div>
     </SectionShell>

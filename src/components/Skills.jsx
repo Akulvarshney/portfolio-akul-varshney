@@ -1,6 +1,10 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Card, Tag, Space } from 'antd';
 import { SectionShell } from './SectionShell';
+import { Reveal } from './Reveal';
+
+const ease = [0.22, 1, 0.36, 1];
 
 const GROUPS = [
   {
@@ -32,20 +36,32 @@ const STATS = [
 
 export default function Skills() {
   return (
-    <SectionShell id="skills">
-      <p className="tp-kicker">
-        <span className="tp-kicker__num">05</span>
-        Stack
-      </p>
-      <h2 className="tp-title">
-        Tools &amp; patterns <span className="tp-title__glow">in production</span>
-      </h2>
-      <p className="tp-intro">Languages, data stores, cloud, and how systems are structured — what I use day to day.</p>
+    <SectionShell id="skills" invert={false} parallax={50}>
+      <Reveal from="up" delay={0}>
+        <p className="tp-kicker">
+          <span className="tp-kicker__num">05</span>
+          Stack
+        </p>
+      </Reveal>
+      <Reveal from="up" delay={0.08}>
+        <h2 className="tp-title">
+          Tools &amp; patterns <span className="tp-title__glow">in production</span>
+        </h2>
+      </Reveal>
+      <Reveal from="up" delay={0.16}>
+        <p className="tp-intro">Languages, data stores, cloud, and how systems are structured — what I use day to day.</p>
+      </Reveal>
 
       <div className="tp-skills__layout">
         <div className="tp-skills__groups">
-          {GROUPS.map((g) => (
-            <div key={g.title}>
+          {GROUPS.map((g, i) => (
+            <motion.div
+              key={g.title}
+              initial={{ opacity: 0, x: i % 2 === 0 ? -36 : 36 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 'some', margin: '0px' }}
+              transition={{ delay: i * 0.06, duration: 0.5, ease }}
+            >
               <Card size="small" className="tp-skill-card" title={g.title}>
                 <Space size={[8, 8]} wrap>
                   {g.items.map((t) => (
@@ -55,11 +71,16 @@ export default function Skills() {
                   ))}
                 </Space>
               </Card>
-            </div>
+            </motion.div>
           ))}
         </div>
 
-        <div>
+        <motion.div
+          initial={{ opacity: 0, y: 48 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 'some', margin: '0px' }}
+          transition={{ duration: 0.55, ease, delay: 0.08 }}
+        >
           <div className="tp-skills__visual">
             <img
               src="https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?w=800&q=80"
@@ -75,7 +96,7 @@ export default function Skills() {
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </SectionShell>
   );
